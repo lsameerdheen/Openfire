@@ -4,9 +4,12 @@ RUN apt-get update -qq \
     && apt-get install -qqy maven \
     && cd /usr/src \
     && mvn package
+   
+RUN MKDIR /tmp/src/target
 
 FROM openjdk:8-jre
 COPY --from=0 /usr/src/distribution/target/distribution-base /usr/local/openfire
+COPY --from=0 /usr/src/distribution/target/distribution-base /tmp/src/target
 COPY --from=0 /usr/src/build/docker/entrypoint.sh /sbin/entrypoint.sh
 WORKDIR /usr/local/openfire
 
